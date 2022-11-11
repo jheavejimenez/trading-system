@@ -1,9 +1,9 @@
+from django.db.models import Sum
 from rest_framework import serializers
 
 from trading.models import (
     Currency,
     Stock,
-    Inventory,
     Wallet,
     Trade,
     User
@@ -39,12 +39,6 @@ class StockInsertSerializer(serializers.ModelSerializer):
 class BaseSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     stock = StockSerializer(read_only=True)
-
-
-class InventorySerializer(BaseSerializer):
-    class Meta:
-        model = Inventory
-        fields = "__all__"
 
 
 class WalletSerializer(BaseSerializer):
@@ -92,3 +86,32 @@ class TradeInsertSerializer(serializers.ModelSerializer):
             total=total_value
         )
         return trade
+
+
+def get_trade_info(user_id, stock):
+    return {
+        'total quantity': Trade.objects.filter(user=user_id, stock=stock).aggregate(Sum('quantity'))['quantity__sum'],
+        'total value': Trade.objects.filter(user=user_id, stock=stock).aggregate(Sum('total'))['total__sum']
+    }
+
+
+class UserPortfolioSerializer(serializers.Serializer):
+    stock_id = serializers.IntegerField(
+        help_text="Item id for statistics",
+        allow_null=True
+    )
+
+    def validate(self, attrs):
+        try:
+            Stock.objects.get(id=attrs['stock_id'])
+        except Stock.DoesNotExist:
+            if attrs['stock_id'] is not None:
+                raise serializers.ValidationError('Stock does not exist')
+        return attrs
+
+    def create(self, validated_data):
+        user_id = self.context.get('request').user.id
+        return get_trade_info(
+            user_id,
+            validated_data['stock_id'],
+        )

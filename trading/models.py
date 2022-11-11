@@ -41,19 +41,6 @@ class Stock(BaseModel):
         verbose_name_plural = 'Stocks'
 
 
-class Inventory(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-
-    def __str__(self):
-        return f'{self.stock.code} - {self.quantity}'
-
-    class Meta:
-        verbose_name = 'Inventory'
-        verbose_name_plural = 'Inventories'
-
-
 class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
