@@ -8,7 +8,10 @@ from trading.models import (
     Wallet,
     Trade
 )
-from trading.serializer import TradeSerializer
+from trading.serializer import (
+    TradeSerializer,
+    CurrencySerializer
+)
 
 
 class TradingView(
@@ -18,3 +21,14 @@ class TradingView(
 ):
     queryset = Trade.objects.all()
     serializer_class = TradeSerializer
+
+
+class CurrencyViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+
+    queryset = Currency.objects.all()
+    serializer_class = CurrencySerializer

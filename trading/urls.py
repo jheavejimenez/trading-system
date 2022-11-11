@@ -2,10 +2,12 @@ from django.urls import path, include
 from rest_framework import routers
 
 from .views import (
-    TradingView
+    TradingView,
+    CurrencyViewSet
 )
 router = routers.DefaultRouter()
 router.register(r'trading', TradingView)
+router.register(r'currency', CurrencyViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
