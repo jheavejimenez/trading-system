@@ -66,7 +66,7 @@ class WalletSerializer(BaseSerializer):
 
 
 class TradeSerializer(BaseSerializer):
-    stock = StockSerializer(read_only=True)
+    stocks = StockSerializer(write_only=True)
 
     class Meta:
         model = Trade

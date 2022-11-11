@@ -13,20 +13,6 @@ class BaseModel(models.Model):
         return self.code
 
 
-ORDERTYPE_CHOICES = (
-    ('buy', 'Buy'),
-    ('sell', 'Sell'),
-)
-
-
-class OrderType(BaseModel):
-    type = models.CharField(
-        max_length=4,
-        choices=ORDERTYPE_CHOICES,
-        default='buy',
-    )
-
-
 class Currency(BaseModel):
 
     def __str__(self):
@@ -105,10 +91,20 @@ class Wallet(models.Model):
         verbose_name_plural = 'Wallets'
 
 
+ORDERTYPE_CHOICES = (
+    ('buy', 'Buy'),
+    ('sell', 'Sell'),
+)
+
+
 class Trade(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
-    order_type = models.ForeignKey(OrderType, on_delete=models.CASCADE)
+    order_type = models.CharField(
+        max_length=4,
+        choices=ORDERTYPE_CHOICES,
+        default='buy',
+    )
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)

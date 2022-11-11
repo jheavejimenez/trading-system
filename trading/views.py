@@ -19,12 +19,17 @@ from trading.serializer import (
 
 
 class TradingView(
+    mixins.CreateModelMixin,
     mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
     queryset = Trade.objects.all()
-    serializer_class = TradeSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return TradeSerializer
+        return TradeSerializer
 
 
 class CurrencyView(
@@ -61,19 +66,22 @@ class PriceView(
 
 
 class InventoryView(
+    mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Inventory.objects.all()
     serializer_class = InventorySerializer
 
 
 class WalletView(
+    mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
-    permission_classes = (permissions.IsAdminUser,)
