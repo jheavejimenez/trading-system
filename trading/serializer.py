@@ -66,8 +66,14 @@ class WalletSerializer(BaseSerializer):
 
 
 class TradeSerializer(BaseSerializer):
-    stocks = StockSerializer(write_only=True)
+    stocks = StockSerializer(read_only=True)
 
+    class Meta:
+        model = Trade
+        fields = "__all__"
+
+
+class TradeInsertSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trade
         fields = "__all__"
