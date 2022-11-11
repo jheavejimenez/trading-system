@@ -1,13 +1,19 @@
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, permissions
 
 from trading.models import (
     Currency,
     Stock,
-    Trade
+    Trade,
+    Price,
+    Inventory, Wallet
 )
 from trading.serializer import (
     TradeSerializer,
-    CurrencySerializer, StockSerializer, StockInsertSerializer
+    CurrencySerializer,
+    StockSerializer,
+    StockInsertSerializer,
+    PriceSerializer,
+    InventorySerializer, WalletSerializer
 )
 
 
@@ -42,3 +48,31 @@ class StockView(
         if self.action == 'create':
             return StockInsertSerializer
         return StockSerializer
+
+
+class PriceView(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer
+
+
+class InventoryView(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Inventory.objects.all()
+    serializer_class = InventorySerializer
+
+
+class WalletView(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Wallet.objects.all()
+    serializer_class = WalletSerializer
+    permission_classes = (permissions.IsAdminUser,)
