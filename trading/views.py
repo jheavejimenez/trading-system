@@ -8,6 +8,7 @@ from trading.models import (
     Wallet,
     Trade
 )
+from trading.serializer import TradeSerializer
 
 
 class TradingView(
@@ -16,4 +17,4 @@ class TradingView(
     viewsets.GenericViewSet,
 ):
     queryset = Trade.objects.all()
-    serializer_class = TradingSerializer
+    serializer_class = TradeSerializer
