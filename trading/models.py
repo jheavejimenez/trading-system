@@ -71,6 +71,19 @@ class Inventory(models.Model):
         verbose_name_plural = 'Inventories'
 
 
+class Wallet(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
+    balance = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'{self.currency.code} - {self.balance}'
+
+    class Meta:
+        verbose_name = 'Wallet'
+        verbose_name_plural = 'Wallets'
+
+
 class Trade(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
@@ -85,16 +98,3 @@ class Trade(models.Model):
     class Meta:
         verbose_name = 'Trade'
         verbose_name_plural = 'Trades'
-
-
-class Wallet(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    balance = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return f'{self.currency.code} - {self.balance}'
-
-    class Meta:
-        verbose_name = 'Wallet'
-        verbose_name_plural = 'Wallets'
