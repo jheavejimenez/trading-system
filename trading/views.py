@@ -3,14 +3,11 @@ from rest_framework import mixins, viewsets
 from trading.models import (
     Currency,
     Stock,
-    Price,
-    Inventory,
-    Wallet,
     Trade
 )
 from trading.serializer import (
     TradeSerializer,
-    CurrencySerializer
+    CurrencySerializer, StockSerializer, StockInsertSerializer
 )
 
 
@@ -23,12 +20,25 @@ class TradingView(
     serializer_class = TradeSerializer
 
 
-class CurrencyViewSet(
+class CurrencyView(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
-
     queryset = Currency.objects.all()
     serializer_class = CurrencySerializer
+
+
+class StockView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Stock.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return StockInsertSerializer
+        return StockSerializer

@@ -3,11 +3,12 @@ from rest_framework import routers
 
 from .views import (
     TradingView,
-    CurrencyViewSet
+    CurrencyView, StockView
 )
 router = routers.DefaultRouter()
 router.register(r'trading', TradingView)
-router.register(r'currency', CurrencyViewSet)
+router.register(r'currency', CurrencyView)
+router.register(r'stock', StockView)
 
 urlpatterns = [
     path('', include(router.urls)),
