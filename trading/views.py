@@ -5,7 +5,8 @@ from trading.models import (
     Stock,
     Trade,
     Price,
-    Inventory, Wallet
+    Inventory,
+    Wallet
 )
 from trading.serializer import (
     TradeSerializer,
