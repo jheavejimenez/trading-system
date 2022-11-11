@@ -4,7 +4,6 @@ from trading.models import (
     Currency,
     Stock,
     Trade,
-    Price,
     Inventory,
     Wallet
 )
@@ -13,8 +12,9 @@ from trading.serializer import (
     CurrencySerializer,
     StockSerializer,
     StockInsertSerializer,
-    PriceSerializer,
-    InventorySerializer, WalletSerializer
+    InventorySerializer,
+    WalletSerializer,
+    TradeInsertSerializer
 )
 
 
@@ -28,7 +28,7 @@ class TradingView(
 
     def get_serializer_class(self):
         if self.action == 'create':
-            return TradeSerializer
+            return TradeInsertSerializer
         return TradeSerializer
 
 
@@ -54,15 +54,6 @@ class StockView(
         if self.action == 'create':
             return StockInsertSerializer
         return StockSerializer
-
-
-class PriceView(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet,
-):
-    queryset = Price.objects.all()
-    serializer_class = PriceSerializer
 
 
 class InventoryView(

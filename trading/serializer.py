@@ -3,7 +3,6 @@ from rest_framework import serializers
 from trading.models import (
     Currency,
     Stock,
-    Price,
     Inventory,
     Wallet,
     Trade,
@@ -34,14 +33,6 @@ class StockSerializer(serializers.ModelSerializer):
 class StockInsertSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stock
-        fields = "__all__"
-
-
-class PriceSerializer(serializers.ModelSerializer):
-    stock = StockSerializer(read_only=True)
-
-    class Meta:
-        model = Price
         fields = "__all__"
 
 
