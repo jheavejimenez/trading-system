@@ -1,3 +1,19 @@
-from django.shortcuts import render
+from rest_framework import mixins, viewsets
 
-# Create your views here.
+from trading.models import (
+    Currency,
+    Stock,
+    Price,
+    Inventory,
+    Wallet,
+    Trade
+)
+
+
+class TradingView(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Trade.objects.all()
+    serializer_class = TradingSerializer
