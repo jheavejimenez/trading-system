@@ -34,7 +34,8 @@ class Currency(BaseModel):
 
 class Stock(BaseModel):
     id = models.AutoField(primary_key=True)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL)
+    currency = models.ForeignKey(Currency, null=True,
+                                 blank=True, on_delete=models.SET_NULL)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
@@ -46,7 +47,8 @@ class Stock(BaseModel):
 
 
 class Price(models.Model):
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE,
+                              related_name="prices", related_query_name="price")
     date = models.DateField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
