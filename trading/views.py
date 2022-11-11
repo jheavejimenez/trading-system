@@ -67,7 +67,7 @@ class WalletView(
     serializer_class = WalletSerializer
 
 
-class UserPortfolioView(viewsets.GenericViewSet):
+class UserPortfolioView(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = UserPortfolioSerializer
     permission_classes = (permissions.IsAuthenticated,)
 

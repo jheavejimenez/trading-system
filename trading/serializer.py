@@ -89,6 +89,16 @@ class TradeInsertSerializer(serializers.ModelSerializer):
 
 
 def get_trade_info(user_id, stock):
+    if stock is None:
+        total_value = Trade.objects.filter(user=user_id).aggregate(Sum('total'))
+        total_quantity = Trade.objects.filter(user=user_id).aggregate(Sum('quantity'))
+        stock_names = Trade.objects.filter(user=user_id).values_list('stock__name', flat=True).distinct()
+        return {
+            'stock_names': stock_names,
+            'total_quantity': total_quantity['quantity__sum'],
+            'total invested': total_value['total__sum']
+        }
+
     return {
         'total quantity': Trade.objects.filter(user=user_id, stock=stock).aggregate(Sum('quantity'))['quantity__sum'],
         'total value': Trade.objects.filter(user=user_id, stock=stock).aggregate(Sum('total'))['total__sum']
@@ -96,10 +106,7 @@ def get_trade_info(user_id, stock):
 
 
 class UserPortfolioSerializer(serializers.Serializer):
-    stock_id = serializers.IntegerField(
-        help_text="Item id for statistics",
-        allow_null=True
-    )
+    stock_id = serializers.IntegerField(allow_null=True)
 
     def validate(self, attrs):
         try:
