@@ -11,7 +11,7 @@ from .views import (
 )
 
 router = routers.DefaultRouter()
-router.register(r'trading', TradingView)
+router.register(r'trade', TradingView)
 router.register(r'currency', CurrencyView)
 router.register(r'stock', StockView)
 router.register(r'price', PriceView)

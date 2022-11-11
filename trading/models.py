@@ -13,13 +13,18 @@ class BaseModel(models.Model):
         return self.code
 
 
-class OrderType(BaseModel):
-    choices = (
-        ('buy', 'Buy'),
-        ('sell', 'Sell'),
-    )
+ORDERTYPE_CHOICES = (
+    ('buy', 'Buy'),
+    ('sell', 'Sell'),
+)
 
-    type = models.CharField(max_length=4, choices=choices)
+
+class OrderType(BaseModel):
+    type = models.CharField(
+        max_length=4,
+        choices=ORDERTYPE_CHOICES,
+        default='buy',
+    )
 
 
 class Currency(BaseModel):
